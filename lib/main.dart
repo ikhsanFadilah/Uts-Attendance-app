@@ -1,118 +1,94 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
-
-import 'add.dart';
-import 'mainpage.dart';
 import 'package:flutter/material.dart';
+import 'homepage.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: "AIzaSyCXgBJYEqzU163gcfH8_v-0ySEuSxYX12Y",
-        authDomain: "attaand-19a30.firebaseapp.com",
-        projectId: "attaand-19a30",
-        storageBucket: "attaand-19a30.appspot.com",
-        messagingSenderId: "1085631263056",
-        appId: "1:1085631263056:web:4896cf4e6b4dc92fc87c55",
-        measurementId: "G-YWCPG6HFHR",
-      ),
-    );
-  } else {
-    await Firebase.initializeApp();
-  }
-  runApp(MyApp());
+void main() {
+  runApp(LoginApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class LoginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Attendance app',
-      home: Home(),
+      title: 'Login App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: LoginPage(),
     );
   }
 }
 
-class Home extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  State<Home> createState() => _HomeState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _HomeState extends State<Home> {
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String errorMessage = '';
+
+  void login() {
+    String username = usernameController.text;
+    String password = passwordController.text;
+
+    if (username == 'ikhsan' && password == 'ikhsan') {
+      // Jika username dan password benar, alihkan ke halaman berikutnya
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homepage(),
+        ),
+      );
+    } else {
+      // Jika username atau password salah, tampilkan pesan kesalahan
+      setState(() {
+        errorMessage = 'Username atau password salah!';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var h = MediaQuery.of(context).size.height;
-    var w = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Attendance app'),
+      appBar: AppBar(title: Text('Login')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: usernameController,
+              decoration: InputDecoration(labelText: 'Username'),
+            ),
+            SizedBox(height: 12),
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: login,
+              child: Text('Login'),
+            ),
+            SizedBox(height: 8),
+            Text(
+              errorMessage,
+              style: TextStyle(color: Colors.red),
+            ),
+          ],
+        ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Container(
-              margin: EdgeInsets.all(20),
-              // height: 50,
-              // width: w,
-              child: MaterialButton(
-                color: Color.fromARGB(255, 2, 0, 133),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => mainpage(),
-                    ),
-                  );
-                },
-                child: Text(
-                  'Attendance',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Center(
-            child: Container(
-              margin: EdgeInsets.all(20),
-              // height: 50,
-              // width: w,
-              child: MaterialButton(
-                color: Color.fromARGB(255, 2, 0, 133),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => add(),
-                    ),
-                  );
-                },
-                child: Text(
-                  'ADD',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+    );
+  }
+}
+
+class NextPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Next Page')),
+      body: Center(
+        child: Text('Halaman berikutnya'),
       ),
     );
   }
