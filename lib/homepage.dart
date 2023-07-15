@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-
 import 'add.dart';
 import 'mainpage.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +7,7 @@ import 'package:flutter/material.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
-    await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: "your_api_key",
-        authDomain: "your_auth_domain",
-        projectId: "your_project_id",
-        storageBucket: "your_storage_bucket",
-        messagingSenderId: "your_messaging_sender_id",
-        appId: "your_app_id",
-        measurementId: "your_measurement_id",
-      ),
-    );
+    await Firebase.initializeApp();
   } else {
     await Firebase.initializeApp();
   }
@@ -49,8 +38,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    var h = MediaQuery.of(context).size.height;
-    var w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text('Attendance app'),
